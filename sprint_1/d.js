@@ -19,7 +19,7 @@ function getWeatherRandomness(temperatures) {
     if (temperatures?.length === 1) {
         return 1;
     } else if (!temperatures?.length) {
-        return 0;
+        return dayCount;
     }
 
     if (temperatures[0] > temperatures[1]) {
