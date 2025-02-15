@@ -12,8 +12,6 @@ _reader.on("line", (line) => {
 
 process.stdin.on("end", solve);
 
-// https://contest.yandex.ru/contest/22450/run-report/133446700/
-
 function prepareData() {
     const idle = Number(_input[0]);
     const matrix = [];
@@ -27,6 +25,7 @@ function prepareData() {
 }
 
 PLAYERS = 2;
+// https://contest.yandex.ru/contest/22450/run-report/133458275/
 
 function checkFriendFingers(idle, matrix) {
     const maxNumber = PLAYERS * idle;
