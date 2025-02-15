@@ -12,6 +12,8 @@ _reader.on("line", (line) => {
 
 process.stdin.on("end", solve);
 
+// https://contest.yandex.ru/contest/22450/run-report/133446700/
+
 function prepareData() {
     const idle = Number(_input[0]);
     const matrix = [];
@@ -24,23 +26,24 @@ function prepareData() {
     return [idle, matrix];
 }
 
-function checkFriendFingers(idle, matrix) {
-    const maxNumber = 2 * idle;
-    const variants = {};
+PLAYERS = 2;
 
-    matrix.forEach(matrixItem => {
-        matrixItem.forEach(item => {
-            if (item !== '.') {
-                if (!variants[item]) variants[item] = 1;
-                else variants[item] += 1;
+function checkFriendFingers(idle, matrix) {
+    const maxNumber = PLAYERS * idle;
+    const keyCount = {};
+
+    matrix.forEach(row => {
+        row.forEach(key => {
+            if (key !== '.') {
+                keyCount[key] = (keyCount[key] ?? 0) + 1;
             }
         })
     })
 
     let result = 0;
 
-    Object.keys(variants).forEach(key => {
-        variants[key] <= maxNumber ? result++ : null;
+    Object.keys(keyCount).forEach(key => {
+        keyCount[key] <= maxNumber ? result++ : null;
     })
 
     return result;

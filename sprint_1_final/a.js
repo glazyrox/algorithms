@@ -18,6 +18,8 @@ const test6 = [1];
 const test7 = [64, 68, 37, 11, 77, 80, 48, 82, 0] // 8 7 6 5 4 3 2 1 0
 const test8 = [98, 0, 10, 77, 0, 59, 28, 0, 94];
 
+// https://contest.yandex.ru/contest/22450/run-report/133446700/
+
 function calcZeros(length, line) {
     let result = [];
     let lastZero = -1;
