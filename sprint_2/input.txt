@@ -1,6 +1,8 @@
-4
-3
-1 2 3
-0 2 6
-7 4 1
-2 7 0
+7
+get_max
+pop
+pop
+pop
+push 10
+get_max
+push -9
