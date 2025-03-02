@@ -57,12 +57,11 @@
 //
 
 // -- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
-// Как будто бы я не до конца понял, как это считать, но мы храним строку в массиве и имеем дек
 // Массив фиксированной длинны, в стеке не может храниться > n
 // Поэтому сложность О(n)
 
 // -- ПОСЫЛКА --
-// https://contest.yandex.ru/contest/22781/run-report/134191313/
+// https://contest.yandex.ru/contest/22781/run-report/134282960/
 
 const _readline = require('readline');
 const _reader = _readline.createInterface({
@@ -99,6 +98,13 @@ class Stack {
     }
 }
 
+const Operations = {
+    '*': (operandFirst, secondOperand) => operandFirst * secondOperand,
+    '/': (operandFirst, secondOperand) => Math.floor(operandFirst / secondOperand),
+    "+": (operandFirst, secondOperand) => operandFirst + secondOperand,
+    "-": (operandFirst, secondOperand) => operandFirst - secondOperand,
+}
+
 function solve(item) {
     const stack = new Stack();
     const polandNotation = prepareData();
@@ -109,21 +115,8 @@ function solve(item) {
         } else {
             const secondOperand = Number(stack.pop());
             const operandFirst = Number(stack.pop());
-            let result = 0;
-            //
-            // console.log(`CALCULATE: ${operandFirst} ${notationItem} ${secondOperand}`);
 
-            if (notationItem === "*") {
-                result = operandFirst * secondOperand;
-            } else if (notationItem === "/") {
-                result = Math.floor(operandFirst / secondOperand);
-            } else if (notationItem === "+") {
-                result = operandFirst + secondOperand;
-            } else if (notationItem === "-") {
-                result = operandFirst - secondOperand;
-            }
-            // console.log('CALCULATE RESULT ', result);
-            stack.push(result);
+            stack.push(Operations?.[notationItem]?.(operandFirst, secondOperand));
         }
     });
 

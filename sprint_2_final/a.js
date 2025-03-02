@@ -42,6 +42,9 @@ const prepareData = () => {
 // Дек занимает O(m) памяти
 // Поэтому сложность О(m)
 
+// -- ПОССЫЛКА --
+// https://contest.yandex.ru/contest/22781/run-report/134282322/
+
 const DEQ_CMD = {
     push_front: 'pushFront',
     push_back: 'pushBack',
