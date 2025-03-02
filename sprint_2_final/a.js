@@ -36,11 +36,18 @@ const prepareData = () => {
 
 // -- ВРЕМЕННАЯ СЛОЖНОСТЬ --
 // Операции удаления, добавления происходят за О(1)
+// Обработка всех команд занимает O(n)
 
 // -- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
-// Массив фиксированной длинны, в деке не может храниться > n
-// Поэтому сложность О(n)
+// Дек занимает O(m) памяти
+// Поэтому сложность О(m)
 
+const DEQ_CMD = {
+    push_front: 'pushFront',
+    push_back: 'pushBack',
+    pop_front: 'popFront',
+    pop_back: 'popBack',
+}
 
 class Deq {
     constructor(n) {
@@ -53,10 +60,17 @@ class Deq {
         this.ERROR = 'error';
     }
 
-    push_back(x) {
-        if (this.size === this.maxN) {
-            console.log(this.ERROR);
-            return;
+    get isEmpty() {
+        return this.size === 0
+    }
+
+    get isFull() {
+        return this.size === this.maxN;
+    }
+
+    pushBack(x) {
+        if (this.isFull) {
+            throw new Error(this.ERROR);
         }
 
         if (this.tail === -1  ) {
@@ -73,13 +87,12 @@ class Deq {
         }
     }
 
-    push_front(x) {
-        if (this.size === this.maxN) {
-            console.log(this.ERROR);
-            return;
+    pushFront(x) {
+        if (this.isFull) {
+            throw new Error(this.ERROR);
         }
 
-        if (this.head === -1 ) {
+        if (this.head === -1) {
             this.head = this.tail = 0;
 
             this.queue[this.head] = x;
@@ -93,34 +106,31 @@ class Deq {
         }
     }
 
-    pop_back() {
-        if (this.size === 0) {
-            console.log(this.ERROR);
-
-
-            return;
+    popBack() {
+        if (this.isEmpty) {
+            throw new Error(this.ERROR);
         } else {
             this.size--;
-            console.log(this.queue[this.tail]);
+            const result = this.queue[this.tail];
             this.queue[this.tail] = null;
 
             this.tail = (this.tail - 1 + this.maxN) % this.maxN;
+
+            return result;
         }
     }
 
-    pop_front() {
-        if (this.size === 0) {
-            console.log(this.ERROR);
-
-
-            return;
-
+    popFront() {
+        if (this.isEmpty) {
+            throw new Error(this.ERROR);
         } else {
+            const result = this.queue[this.head];
             this.size--;
-            console.log(this.queue[this.head]);
             this.queue[this.head] = null;
 
             this.head = (this.head + 1) % this.maxN;
+
+            return result
         }
     }
 }
@@ -130,10 +140,18 @@ function solve() {
     const deq = new Deq(sizeNum);
 
     command.forEach(cmdItem => {
-        if (cmdItem.length === 2) {
-            deq?.[cmdItem[0]]?.(Number(cmdItem[1]));
-        } else {
-            deq?.[cmdItem[0]]?.();
+        let result;
+
+        try {
+            if (cmdItem.length === 2) {
+                deq?.[DEQ_CMD[cmdItem[0]]]?.(Number(cmdItem[1]));
+            } else {
+                result = deq?.[DEQ_CMD[cmdItem[0]]]?.();
+            }
+
+            if (typeof result !== "undefined") console.log(result);
+        } catch (error) {
+            console.log('error');
         }
     });
 }

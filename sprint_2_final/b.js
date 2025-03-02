@@ -61,6 +61,9 @@
 // Массив фиксированной длинны, в стеке не может храниться > n
 // Поэтому сложность О(n)
 
+// -- ПОСЫЛКА --
+// https://contest.yandex.ru/contest/22781/run-report/134191313/
+
 const _readline = require('readline');
 const _reader = _readline.createInterface({
     input: process.stdin,
