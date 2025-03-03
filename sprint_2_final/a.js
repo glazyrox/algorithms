@@ -39,11 +39,16 @@ const prepareData = () => {
 // Обработка всех команд занимает O(n)
 
 // -- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
-// Дек занимает O(m) памяти
-// Поэтому сложность О(m)
+// m — максимальный размер дека (буфера).
+// n — количество команд.
+// Массив фиксированного размера queue для хранения m элементов → O(m).
+// Дополнительные переменные: head, tail, size, maxN, ERROR → O(1).
+// Дополнительная память для входных данных (_input в prepareData) → O(n).
+// Общая - O(m+n)
+// Дополнительная - (без входных) → O(m)
 
 // -- ПОССЫЛКА --
-// https://contest.yandex.ru/contest/22781/run-report/134282322/
+// https://contest.yandex.ru/contest/22781/run-report/134368111/
 
 const DEQ_CMD = {
     push_front: 'pushFront',
@@ -53,14 +58,14 @@ const DEQ_CMD = {
 }
 
 class Deq {
+    ERROR = 'error';
+
     constructor(n) {
         this.queue = new Array(n).fill(null);
         this.head = -1;
         this.tail = -1;
         this.maxN = n;
         this.size = 0;
-
-        this.ERROR = 'error';
     }
 
     get isEmpty() {
@@ -70,6 +75,15 @@ class Deq {
     get isFull() {
         return this.size === this.maxN;
     }
+
+    increaseIterator(iterator){
+        return (iterator + 1) % this.maxN;
+    }
+
+    decreaseIterator(iterator){
+        return (iterator - 1 + this.maxN) % this.maxN;
+    }
+
 
     pushBack(x) {
         if (this.isFull) {
@@ -83,7 +97,7 @@ class Deq {
 
             this.size++;
         } else {
-            this.tail = (this.tail + 1) % this.maxN;
+            this.tail = this.increaseIterator(this.tail);
             this.queue[this.tail] = x;
 
             this.size++;
@@ -102,7 +116,7 @@ class Deq {
 
             this.size++;
         } else {
-            this.head = (this.head - 1 + this.maxN) % this.maxN;
+            this.head = this.decreaseIterator(this.head);
             this.queue[this.head] = x;
 
             this.size++;
@@ -116,8 +130,7 @@ class Deq {
             this.size--;
             const result = this.queue[this.tail];
             this.queue[this.tail] = null;
-
-            this.tail = (this.tail - 1 + this.maxN) % this.maxN;
+            this.tail = this.decreaseIterator(this.tail);
 
             return result;
         }
@@ -131,7 +144,7 @@ class Deq {
             this.size--;
             this.queue[this.head] = null;
 
-            this.head = (this.head + 1) % this.maxN;
+            this.head = this.increaseIterator(this.head);
 
             return result
         }
@@ -147,9 +160,9 @@ function solve() {
 
         try {
             if (cmdItem.length === 2) {
-                deq?.[DEQ_CMD[cmdItem[0]]]?.(Number(cmdItem[1]));
+                deq[DEQ_CMD[cmdItem[0]]](Number(cmdItem[1]));
             } else {
-                result = deq?.[DEQ_CMD[cmdItem[0]]]?.();
+                result = deq[DEQ_CMD[cmdItem[0]]]();
             }
 
             if (typeof result !== "undefined") console.log(result);
